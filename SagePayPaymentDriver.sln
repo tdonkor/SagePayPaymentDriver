@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Acrelec.MockingBird.Core", "Acrelec.MockingBird.Core", "{D9572EAA-BD96-4133-AB8B-28A58C37BF30}"
+	ProjectSection(SolutionItems) = preProject
+		Acrelec.MockingBird.Core\Acrelec.Library.Coder.dll = Acrelec.MockingBird.Core\Acrelec.Library.Coder.dll
+		Acrelec.MockingBird.Core\Acrelec.Library.Logger.dll = Acrelec.MockingBird.Core\Acrelec.Library.Logger.dll
+		Acrelec.MockingBird.Core\Acrelec.Library.LogReport.dll = Acrelec.MockingBird.Core\Acrelec.Library.LogReport.dll
+		Acrelec.MockingBird.Core\Acrelec.Library.Pipes.dll = Acrelec.MockingBird.Core\Acrelec.Library.Pipes.dll
+		Acrelec.MockingBird.Core\Mockingbird.Feather.Peripherals.dll = Acrelec.MockingBird.Core\Mockingbird.Feather.Peripherals.dll
+		Acrelec.MockingBird.Core\Mockingbird.Interfaces.Peripherals.dll = Acrelec.MockingBird.Core\Mockingbird.Interfaces.Peripherals.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payments", "Payments", "{15E39DF9-2B3D-4DF8-8BDB-B8E904FDA59A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Driver", "Driver", "{F8DDC559-9C89-4900-A364-0627A516A68D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Loader", "Loader", "{76EF129A-950B-4F5E-8997-30AF1D8F47CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uk_sagepay_guardian", "Payments\Driver\uk_sagepay_guardian\uk_sagepay_guardian.csproj", "{B0EEB754-9628-4556-BF5E-0FAB5FF95F0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "payment_guardian", "Payments\Loader\payment_guardian\payment_guardian.csproj", "{B80BF2B9-77C8-4F26-8A7D-AA28F0A65ADD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0EEB754-9628-4556-BF5E-0FAB5FF95F0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0EEB754-9628-4556-BF5E-0FAB5FF95F0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0EEB754-9628-4556-BF5E-0FAB5FF95F0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0EEB754-9628-4556-BF5E-0FAB5FF95F0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B80BF2B9-77C8-4F26-8A7D-AA28F0A65ADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B80BF2B9-77C8-4F26-8A7D-AA28F0A65ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B80BF2B9-77C8-4F26-8A7D-AA28F0A65ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B80BF2B9-77C8-4F26-8A7D-AA28F0A65ADD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F8DDC559-9C89-4900-A364-0627A516A68D} = {15E39DF9-2B3D-4DF8-8BDB-B8E904FDA59A}
+		{76EF129A-950B-4F5E-8997-30AF1D8F47CE} = {15E39DF9-2B3D-4DF8-8BDB-B8E904FDA59A}
+		{B0EEB754-9628-4556-BF5E-0FAB5FF95F0B} = {F8DDC559-9C89-4900-A364-0627A516A68D}
+		{B80BF2B9-77C8-4F26-8A7D-AA28F0A65ADD} = {76EF129A-950B-4F5E-8997-30AF1D8F47CE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5B764FAF-3463-40FC-9F35-B276D24C1CE7}
+	EndGlobalSection
+EndGlobal
