@@ -47,12 +47,6 @@ namespace Acrelec.Mockingbird.Payment
                     return ResultCode.GenericError;
                 }
 
-                if  (string.IsNullOrEmpty(configFile.Port))
-                {
-                    Log.Info(".ini file Port value must be set.");
-                    return ResultCode.GenericError;
-                }
-
 
                 using (var api = new GuardianApi())
                 {
@@ -110,7 +104,6 @@ namespace Acrelec.Mockingbird.Payment
                 }
 
                 var config = RuntimeConfiguration.Instance;
-
                 var data = new PaymentData();
 
                 Log.Info("Calling payment driver...");
@@ -137,21 +130,21 @@ namespace Acrelec.Mockingbird.Payment
                     else
                     {
                         data.Result = PaymentResult.Successful;
-                        Log.Error($"Pay Result OK: {payResult}");
+                       
                         data.PaidAmount = amount;
 
-                        Log.Info($"Transaction Successful");
+                        Log.Info($"paid Amount: {data.PaidAmount}");
                         transactionResult = new Result<PaymentData>(ResultCode.Success, data: data);
-                        Log.Info("Payment succeeded.");
+                        Log.Info($"Payment succeeded transaction result: {transactionResult}");
 
-                        CreateCustomerTicket(payResponse);
+                     //   CreateCustomerTicket(payResponse);
                         data.HasClientReceipt = true;
 
                     }
 
 
                     //persist the transaction
-                    PersistTransaction(payResponse);
+                  //  PersistTransaction(payResponse);
                 }
 
 

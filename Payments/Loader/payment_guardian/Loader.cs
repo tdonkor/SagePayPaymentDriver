@@ -74,7 +74,7 @@ namespace Acrelec.Mockingbird.Payment
                         ControlType = SettingDataType.SerialPortSelection,
                         ControlName = "COM Port number",
                         RealName = "Port",
-                        CurrentValue = "",
+                        CurrentValue = "COM9",
                         ControlDescription = "Serial communication port for the EFT terminal (VX820)"
                     },
 
