@@ -7,8 +7,13 @@ namespace Acrelec.Mockingbird.Payment
     public enum DiagnosticErrMsg : short
     {
         OK = 0,
-        NOTOK = 1
+        StartTransactionError = 1,
+        UnableToStartError = 2,
+        NotAuthorisedError = 3,
+        CardEnquiryError = 4,
+        SwipeCardUsedError = 5
     }
+
     public class Utils
     {
 

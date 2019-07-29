@@ -23,8 +23,6 @@ namespace Acrelec.Mockingbird.Payment
         public GuardianApi()
         {
 
-            Log.Info("SagePay Driver Transaction Started.....");
-
             voidTransactionHook = new VoidTransactionHook();
             transactionInfo = new TransactionInfo();
             tillInformation = new TillInformation();
@@ -86,10 +84,9 @@ namespace Acrelec.Mockingbird.Payment
 
                         if (transactionInfo.DataEntryMethod == TransactionInfo.TRANSINFO_DATAENTRYMETHOD.TRANSINFO_DE_SWIPED)
                         {
-
                             Log.Info("Swipe transaction - CANCEL the transaction.");
                             confirmationType = NonGuiTransactionHook.NONGUITRANSACTION_CONFIRMTYPE.CONFIRMTYPE_CANCELLED;
-                            isSuccessful = DiagnosticErrMsg.NOTOK;
+                            isSuccessful = DiagnosticErrMsg.SwipeCardUsedError;
                         }
 
 
@@ -102,8 +99,26 @@ namespace Acrelec.Mockingbird.Payment
                             result = transactionInfo;
                         }
                     }
+                    else
+                    {
+                        //transaction not Authorised 
+                        Log.Error("Transaction not Authorised");
+                        isSuccessful = DiagnosticErrMsg.NotAuthorisedError;
+                    }
+                }
+                else
+                {
+                    //Card Enquiry Error - result will be null
+                    Log.Error("CardEnquiry Eror");
+                    isSuccessful = DiagnosticErrMsg.CardEnquiryError;
                 }
 
+            }
+            else
+            {
+                //Start Transaction Failure
+                Log.Error("Start Transaction Failure");
+                isSuccessful = DiagnosticErrMsg.StartTransactionError;
             }
 
             //end the transaction

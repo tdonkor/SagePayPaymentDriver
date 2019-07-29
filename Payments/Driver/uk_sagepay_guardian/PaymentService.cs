@@ -89,6 +89,7 @@ namespace Acrelec.Mockingbird.Payment
             Log.Info("Pay method started...");
             Log.Info($"Amount = {amount/100.0}.");
             Result<PaymentData> transactionResult = null;
+            string reciept = string.Empty;
 
             try
             {
@@ -114,21 +115,31 @@ namespace Acrelec.Mockingbird.Payment
                     var payResult = api.Pay(amount, out TransactionInfo payResponse);
                     Log.Info($"Pay Result: {payResult}");
 
-                    if (payResult != DiagnosticErrMsg.OK)
+
+                    // interogate the result check if payResponse not equal to null
+
+                    if (payResponse == null)
                     {
-                        Log.Error($"Pay Result Not OK: {payResult} Payment Failed.");
-                        //return new Result<PaymentData>((ResultCode)DiagnosticErrMsg.NOTOK);
+                        Log.Error("Tranaction response empty - Check Server Available");
                         data.Result = PaymentResult.Failed;
-                   
-                        //print the payment ticket for an error
-                        //
-                        CreateCustomerTicket("-----\n\nPayment failure with\nyour card or issuer\nNO payment has been taken.\n\nPlease try again with another card,\nor at a manned till.\n\n-----");
-                        data.HasClientReceipt = true;
+                        PrintErrorTicket(data, string.Empty);
+                        return new Result<PaymentData>((ResultCode)payResult, data: data);
+
+                    }
+                    else
+
+                    if (payResult != DiagnosticErrMsg.OK && payResponse != null)
+                    {
+                        Log.Error($"Pay Result = {payResult} Payment Failed.");                    
+                        data.Result = PaymentResult.Failed;
+
+                        PrintErrorTicket(data, payResponse.CustomerReceipt);
 
                         return new Result<PaymentData>((ResultCode)payResult, data: data);
                     }
                     else
                     {
+
                         data.Result = PaymentResult.Successful;
                        
                         data.PaidAmount = amount;
@@ -137,14 +148,12 @@ namespace Acrelec.Mockingbird.Payment
                         transactionResult = new Result<PaymentData>(ResultCode.Success, data: data);
                         Log.Info($"Payment succeeded transaction result: {transactionResult}");
 
-                     //   CreateCustomerTicket(payResponse);
+                        CreateCustomerTicket(payResponse);
                         data.HasClientReceipt = true;
-
                     }
 
-
                     //persist the transaction
-                  //  PersistTransaction(payResponse);
+                    //PersistTransaction(payResponse);
                 }
 
 
@@ -161,6 +170,14 @@ namespace Acrelec.Mockingbird.Payment
             }
         }
 
+        private static void PrintErrorTicket(PaymentData data, string details)
+        {
+            //print the payment ticket for an error
+            //
+            CreateCustomerTicket("\nPayment failure with\nyour card or issuer\nNO payment has been taken.\n\nPlease try again with another card,\nor at a manned till.\n\n" + details);
+            data.HasClientReceipt = true;
+        }
+
         /// <summary>
         /// Shutdown
         /// </summary>
@@ -175,7 +192,7 @@ namespace Acrelec.Mockingbird.Payment
         /// with Customer and Merchant receiept
         /// </summary>
         /// <param name="result"></param>
-        private void PersistTransaction(TransactionInfo result)
+        private static void PersistTransaction(string receipt)
         {
             try
             {
@@ -191,7 +208,7 @@ namespace Acrelec.Mockingbird.Payment
                 Log.Info("Persisting Customerticket to {0}", outputPath);
 
                 //Write the new ticket
-                File.WriteAllText(outputPath, result.CustomerReceipt);
+                File.WriteAllText(outputPath, receipt);
             }
             catch (Exception ex)
             {
@@ -216,6 +233,9 @@ namespace Acrelec.Mockingbird.Payment
                 //Write the new ticket
                 File.WriteAllText(ticketPath, ticket);
 
+                //persist the transaction
+                PersistTransaction(ticket);
+
             }
             catch (Exception ex)
             {
@@ -236,6 +256,9 @@ namespace Acrelec.Mockingbird.Payment
                 Log.Info($"Persisting Customer ticket to {ticketPath}");
                 //Write the new ticket
                 File.WriteAllText(ticketPath, ticket.CustomerReceipt);
+
+                //persist the transaction
+                PersistTransaction(ticket.CustomerReceipt);
             }
             catch (Exception ex)
             {
