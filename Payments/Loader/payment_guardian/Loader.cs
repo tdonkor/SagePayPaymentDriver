@@ -69,14 +69,14 @@ namespace Acrelec.Mockingbird.Payment
                 ConfigurationSettings = new List<AdminPeripheralSetting>()
                 {
 
-                    new AdminPeripheralSetting()
-                    {
-                        ControlType = SettingDataType.SerialPortSelection,
-                        ControlName = "COM Port number",
-                        RealName = "Port",
-                        CurrentValue = "COM9",
-                        ControlDescription = "Serial communication port for the EFT terminal (VX820)"
-                    },
+                    //new AdminPeripheralSetting()
+                    //{
+                    //    ControlType = SettingDataType.SerialPortSelection,
+                    //    ControlName = "COM Port number",
+                    //    RealName = "Port",
+                    //    CurrentValue = "COM9",
+                    //    ControlDescription = "Serial communication port for the EFT terminal (VX820)"
+                    //},
 
                     new AdminPeripheralSetting()
                     {

@@ -10,11 +10,11 @@ namespace Acrelec.Mockingbird.Payment.Contracts
             Instance = new RuntimeConfiguration();
         }
 
-        /// <summary>
-        /// IP Address
-        /// </summary>
-        [DataMember]
-        public string IpAddress { get; set; }
+        ///// <summary>
+        ///// IP Address
+        ///// </summary>
+        //[DataMember]
+        //public string IpAddress { get; set; }
 
         /// <summary>
         /// Transaction timeout
@@ -27,19 +27,6 @@ namespace Acrelec.Mockingbird.Payment.Contracts
         /// </summary>
         [DataMember]
         public int PosNumber { get; set; }
-
-        ///// <summary>
-        ///// COM Port
-        ///// </summary>
-        //[DataMember]
-        //public string Port { get; set; }
-
-        ///// <summary>
-        ///// Force online transaction
-        ///// </summary>
-        //[DataMember]
-        //public bool ForceOnline { get; set; }
-
 
 
         public static RuntimeConfiguration Instance { get; set; }

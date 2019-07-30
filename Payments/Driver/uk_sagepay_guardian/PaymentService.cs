@@ -41,11 +41,11 @@ namespace Acrelec.Mockingbird.Payment
                     return ResultCode.GenericError;
                 }
 
-                if (configuration.Port == string.Empty)
-                {
-                    Log.Info($"Invalid Port {configuration.Port}.");
-                    return ResultCode.GenericError;
-                }
+                //if (configuration.Port == string.Empty)
+                //{
+                //    Log.Info($"Invalid Port {configuration.Port}.");
+                //    return ResultCode.GenericError;
+                //}
 
 
                 using (var api = new GuardianApi())
@@ -100,7 +100,7 @@ namespace Acrelec.Mockingbird.Payment
 
                 if (amount <= 0)
                 {
-                    Log.Info("Invalid pay amount.");
+                    Log.Info("Invalid pay amount...");
                     return ResultCode.GenericError;
                 }
 
@@ -120,7 +120,7 @@ namespace Acrelec.Mockingbird.Payment
 
                     if (payResponse == null)
                     {
-                        Log.Error("Tranaction response empty - Check Server Available");
+                        Log.Error("Transaction response error...");
                         data.Result = PaymentResult.Failed;
                         PrintErrorTicket(data, string.Empty);
                         return new Result<PaymentData>((ResultCode)payResult, data: data);
@@ -130,7 +130,7 @@ namespace Acrelec.Mockingbird.Payment
 
                     if (payResult != DiagnosticErrMsg.OK && payResponse != null)
                     {
-                        Log.Error($"Pay Result = {payResult} Payment Failed.");                    
+                        Log.Error($"Pay Result = {payResult} Payment Failed...");                    
                         data.Result = PaymentResult.Failed;
 
                         PrintErrorTicket(data, payResponse.CustomerReceipt);
@@ -139,7 +139,6 @@ namespace Acrelec.Mockingbird.Payment
                     }
                     else
                     {
-
                         data.Result = PaymentResult.Successful;
                        
                         data.PaidAmount = amount;
@@ -166,7 +165,7 @@ namespace Acrelec.Mockingbird.Payment
             }
             finally
             {
-                Log.Info("Pay method finished.");
+                Log.Info("Pay method finished...");
             }
         }
 

@@ -57,12 +57,12 @@ namespace Acrelec.Mockingbird.Payment
 
             if (intAmount == 0)
             {
-                throw new Exception("Error in Amount value");
+                throw new Exception("Error in Amount value...");
             }
 
             Log.Info($"Valid payment amount: {intAmount}");
 
-            //add the address of the store for the reciept
+            //add the address of the store for the reciept - address will be on the main reciept just populate this to stop it failing
             AddAddress();
 
             //Use a non GUI transaction - if transaction is true proceed to the CardEnquiry stage.
@@ -84,7 +84,7 @@ namespace Acrelec.Mockingbird.Payment
 
                         if (transactionInfo.DataEntryMethod == TransactionInfo.TRANSINFO_DATAENTRYMETHOD.TRANSINFO_DE_SWIPED)
                         {
-                            Log.Info("Swipe transaction - CANCEL the transaction.");
+                            Log.Info("Swipe transaction - Cancel the transaction....");
                             confirmationType = NonGuiTransactionHook.NONGUITRANSACTION_CONFIRMTYPE.CONFIRMTYPE_CANCELLED;
                             isSuccessful = DiagnosticErrMsg.SwipeCardUsedError;
                         }
@@ -98,18 +98,24 @@ namespace Acrelec.Mockingbird.Payment
                         {
                             result = transactionInfo;
                         }
+                        else
+                        {
+                            //transaction not Confirmed 
+                            Log.Error("Transaction not Confirmed...");
+                            isSuccessful = DiagnosticErrMsg.TransactionNotConfirmedError;
+                        }
                     }
                     else
                     {
                         //transaction not Authorised 
-                        Log.Error("Transaction not Authorised");
+                        Log.Error("Transaction not Authorised...");
                         isSuccessful = DiagnosticErrMsg.NotAuthorisedError;
                     }
                 }
                 else
                 {
                     //Card Enquiry Error - result will be null
-                    Log.Error("CardEnquiry Eror");
+                    Log.Error("CardEnquiry Error...");
                     isSuccessful = DiagnosticErrMsg.CardEnquiryError;
                 }
 
@@ -117,27 +123,30 @@ namespace Acrelec.Mockingbird.Payment
             else
             {
                 //Start Transaction Failure
-                Log.Error("Start Transaction Failure");
+                Log.Error("Start Transaction Failure...");
                 isSuccessful = DiagnosticErrMsg.StartTransactionError;
             }
 
             //end the transaction
             nonGuiTransactionHook.EndTransaction();
-            Log.Info("SagePay Driver Transaction Finished.....");
+            Log.Info("SagePay Driver Transaction Finished...");
 
             return isSuccessful;
 
         }
 
+        /// <summary>
+        /// The address will go on the main receipt populate these just to stop it failing
+        /// </summary>
         private void AddAddress()
         {
             // Populate the till information object
-            tillInformation.MerchantName = "Acrelec";
-            tillInformation.Address1 = "East Wing, Focus 31";
-            tillInformation.Address2 = "Mark Road";
-            tillInformation.Address3 = "Hemel Hempstead";
-            tillInformation.Address4 = "HP2 7BW";
-            tillInformation.PhoneNumber = "1234567890";
+            tillInformation.MerchantName = "Transaction";
+            tillInformation.Address1 = "Receipt";
+            //tillInformation.Address2 = "Mark Road";
+            //tillInformation.Address3 = "Hemel Hempstead";
+            //tillInformation.Address4 = "HP2 7BW";
+            //tillInformation.PhoneNumber = "1234567890";
         }
 
 
