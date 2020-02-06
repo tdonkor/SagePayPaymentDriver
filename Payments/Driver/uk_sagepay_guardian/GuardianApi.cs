@@ -73,13 +73,13 @@ namespace Acrelec.Mockingbird.Payment
                 //check the card enquiry returns: RETURNCODE_SUCCESS or RETURNCODE_CASHBACKALLOWED
                 if (nonGuiTransactionHook.CardEnquiry(transactiontype,
                                                 intAmount,
-                                                NonGuiTransactionHook.NONGUITRANSACTION_DATAENTRY.DATAENTRY_CHIPORSWIPEORTAP) == NonGuiTransactionHook.NONGUITRANSACTION_RETURNCODE.RETURNCODE_SUCCESS)
+                                                NonGuiTransactionHook.NONGUITRANSACTION_DATAENTRY.DATAENTRY_CHIPORSWIPEORTAP) != NonGuiTransactionHook.NONGUITRANSACTION_RETURNCODE.RETURNCODE_FAILED)
                 {
 
                     //authorise the transaction
                     Log.Info("Transaction Authorisation Started....");
 
-                    if (nonGuiTransactionHook.AuthoriseTransaction(TransactionHook.TRANSACTIONHOOK_TRANSACTIONTYPE.INT_TT_SALE, intAmount, 0, "SALE", ref transactionInfo) == NonGuiTransactionHook.NONGUITRANSACTION_RETURNCODE.RETURNCODE_SUCCESS)
+                    if (nonGuiTransactionHook.AuthoriseTransaction(transactiontype, intAmount, 0, "SALE", ref transactionInfo) != NonGuiTransactionHook.NONGUITRANSACTION_RETURNCODE.RETURNCODE_FAILED)
                     {
 
                         if (transactionInfo.DataEntryMethod == TransactionInfo.TRANSINFO_DATAENTRYMETHOD.TRANSINFO_DE_SWIPED)
@@ -108,17 +108,22 @@ namespace Acrelec.Mockingbird.Payment
                     else
                     {
                         //transaction not Authorised 
-                        Log.Error("Transaction not Authorised...");
+                        Log.Error("Authorisation Error...Ending Transaction.");
                         isSuccessful = DiagnosticErrMsg.NotAuthorisedError;
+                        //end the transaction
+                        nonGuiTransactionHook.EndTransaction();
                     }
                 }
                 else
                 {
                     //Card Enquiry Error - result will be null
-                    Log.Error("CardEnquiry Error...");
+                    Log.Error("CardEnquiry Error...Ending Transaction.");
                     isSuccessful = DiagnosticErrMsg.CardEnquiryError;
-                }
 
+                    //end the transaction
+                    nonGuiTransactionHook.EndTransaction();
+
+                }
             }
             else
             {
@@ -127,10 +132,9 @@ namespace Acrelec.Mockingbird.Payment
                 isSuccessful = DiagnosticErrMsg.StartTransactionError;
             }
 
-            //end the transaction
-            nonGuiTransactionHook.EndTransaction();
+         
             Log.Info("SagePay Driver Transaction Finished...");
-
+            nonGuiTransactionHook.EndTransaction();
             return isSuccessful;
 
         }
