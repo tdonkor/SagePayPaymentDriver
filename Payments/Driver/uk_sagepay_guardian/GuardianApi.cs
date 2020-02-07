@@ -46,6 +46,8 @@ namespace Acrelec.Mockingbird.Payment
             int intAmount;
             DiagnosticErrMsg isSuccessful = DiagnosticErrMsg.OK;
 
+           
+
             //initialise the result - fill this with the customer reciept to display
             result = null;
 
@@ -69,6 +71,7 @@ namespace Acrelec.Mockingbird.Payment
             if (nonGuiTransactionHook.StartTransaction(ref tillInformation) == true)
             {
                 Log.Info("Transaction Started....");
+                
 
                 //check the card enquiry returns: RETURNCODE_SUCCESS or RETURNCODE_CASHBACKALLOWED
                 if (nonGuiTransactionHook.CardEnquiry(transactiontype,
@@ -110,8 +113,6 @@ namespace Acrelec.Mockingbird.Payment
                         //transaction not Authorised 
                         Log.Error("Authorisation Error...Ending Transaction.");
                         isSuccessful = DiagnosticErrMsg.NotAuthorisedError;
-                        //end the transaction
-                        nonGuiTransactionHook.EndTransaction();
                     }
                 }
                 else
@@ -119,10 +120,6 @@ namespace Acrelec.Mockingbird.Payment
                     //Card Enquiry Error - result will be null
                     Log.Error("CardEnquiry Error...Ending Transaction.");
                     isSuccessful = DiagnosticErrMsg.CardEnquiryError;
-
-                    //end the transaction
-                    nonGuiTransactionHook.EndTransaction();
-
                 }
             }
             else
@@ -132,7 +129,6 @@ namespace Acrelec.Mockingbird.Payment
                 isSuccessful = DiagnosticErrMsg.StartTransactionError;
             }
 
-         
             Log.Info("SagePay Driver Transaction Finished...");
             nonGuiTransactionHook.EndTransaction();
             return isSuccessful;
